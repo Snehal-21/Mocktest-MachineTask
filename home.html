@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <script src="https://kit.fontawesome.com/da1fa9f328.js" crossorigin="anonymous"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: sans-serif;
+        }
+
+        #screen {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            /* border: 1px solid red */
+        }
+
+        #navbar {
+            width: 100%;
+            height: 100px;
+            /* border: 1px solid green; */
+        }
+
+        #body {
+            width: 80%;
+            margin: auto;
+            /* border: 1px solid blue; */
+            margin-top: 30px;
+            display: flex;
+            flex-wrap:wrap;
+            /* align-items: start; */
+            justify-content: space-between ;
+        }
+
+        #body>div {
+            width: 24%;
+            height: 270px;
+            border: 1px solid rgb(250, 249, 249);
+            box-shadow: 5px 10px 15px lightgrey;
+            margin-bottom: 20px;
+            /* align-self: left; */
+        }
+
+        #body>div>div:nth-child(1) {
+            height: 70%;
+            width: 100%;
+        }
+
+        #body>div>div:nth-child(1)>img {
+            height: 100%;
+            width: 100%;
+        }
+
+        #body>div>div:nth-child(2) {
+            height: 30%;
+            width: 100%;
+            text-align: center;
+        }
+
+        /* navbar started */
+        #nav1 {
+            width: 80%;
+            height: 50%;
+            /* border: 1px solid red; */
+            display: flex;
+            margin: auto;
+        }
+
+        #nav1>div {
+            width: 33%;
+            display: flex;
+            align-items: center;
+        }
+
+        #nav1>div:nth-child(1) {
+            align-self: left;
+
+        }
+
+        #nav1>div:nth-child(1)>i {
+            font-size: 25px;
+            margin-left: 30px;
+        }
+
+        #nav1>div:nth-child(2) {
+            justify-content: center;
+        }
+        #nav1>div:nth-child(3) {
+            justify-content: right;
+            padding-left: 50px;
+        }
+        #nav1>div:nth-child(3)>div{
+            height:100%;
+            width:10%;
+            /* border:1px solid red; */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        #nav1>div:nth-child(3)>div>i{
+            font-size: 25px;
+            
+        }
+        #nav2 {
+            width: 80%;
+            height: 50%;
+            /* border: 1px solid red; */
+            display: flex;
+            flex-wrap: no-wrap;
+            margin: auto;
+            justify-content: space-between;
+            align-items: center;
+        }
+        #nav2>div>p{
+            font-size: 14px;
+            font-weight: bold;
+        }
+        #nav1>div:nth-child(3)>div:nth-child(1){
+            width:30%;
+            /* border:1px solid red; */
+        }
+        @media screen and (max-width:1000px){
+            #nav2{
+                display: none;
+            }
+            #navbar{
+                display: flex;
+                align-items: center;
+            }
+            #nav1>div:nth-child(3)>div{
+                width:20%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="screen">
+        <div id="navbar">
+            <div id="nav1">
+                <div><i class="fa-solid fa-magnifying-glass"></i></div>
+                <div><img
+                        src="https://www.strawberrynet.com/_next/image?url=%2Fimages%2Fheader%2FcompanyLogo.png&w=256&q=75"
+                        alt="logo" /></div>
+                <div id="rightnav1">
+                    <div id="login"><i class="fa-regular fa-user"></i></div>
+                    <div><i class="fa-regular fa-heart"></i></div>
+                   
+                    <div><i class="fa-solid fa-bag-shopping"></i></div>
+                    <div onclick="logout()" style="width:60px;"><p>Logout</p></div>
+                </div>
+            </div>
+            <div id="nav2">
+                <div><p>SHOP BY BRAND</p></div>
+                <div><p>SKINCARE</p></div>
+                <div><p>MAKEUP</p></div>
+                <div><p>HAIRCARE</p></div>
+                <div><p>MEN'S COLOGNE</p></div>
+                <div><p>EOMEN'S PERFUME</p></div>
+                <div><p>HOMESCENTS</p></div>
+                <div><p>MEN'S SKINCARE</p></div>
+                <div><p>WELLNESS</p></div>
+                <div><p>LIFESTYLE</p></div>
+            </div>
+        </div>
+        <div id="body">
+            <!-- <div>
+                <div>
+                    <img src="" alt="images" />
+                </div>
+                <div>
+                    <h2>name</h2>
+                    <h4><span>RS. </span>price</h4>
+                </div>
+            </div> -->
+        </div>
+    </div>
+    <script>
+        window.onload = function () {
+            let currentUser = JSON.parse(localStorage.getItem("strawberryLogin"));
+            if (!!currentUser) {
+                let login=document.getElementById("login");
+                let loginuser=`<p>${currentUser.name}</p>`;
+                login.innerHTML=loginuser;
+
+
+                let strawberryProducts = JSON.parse(localStorage.getItem("strawberryProducts"));
+                let divforProducts = document.getElementById("body");
+                let products = "";
+                for (let i = 0; i < strawberryProducts.length; i++) {
+                    products += ` <div onclick='redirect(${JSON.stringify(strawberryProducts[i])})'>
+                <div>
+                    <img src="${strawberryProducts[i].image}" alt="images" />
+                </div>
+                <div>
+                    <h2>${strawberryProducts[i].name}</h2>
+                    <h4><span>RS. </span>${strawberryProducts[i].price}</h4>
+                </div>
+            </div>`;
+                }
+                divforProducts.innerHTML = products;
+            } else {
+                window.location.href = './login.html';
+            }
+        }
+
+        function redirect(product) {
+            let singleProduct = JSON.stringify(product);
+            localStorage.setItem("strawberrySingleProduct", singleProduct);
+            window.location.href = './singleproduct.html';
+        }
+
+        function logout(){
+            alert("Logout successfully");
+            localStorage.removeItem("strawberryLogin");
+            window.location.href='./login.html';
+        }
+    </script>
+</body>
+
+</html>

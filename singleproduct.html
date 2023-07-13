@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            margin:0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: sans-serif;
+        }
+        #screen{
+            width:100%;
+            height:100vh;
+            border:1px solid red;
+            display: flex;
+        }
+        #body{
+            width:60%;
+            height:500px;
+            border:1px solid lightgrey;
+            box-shadow: 5px 10px 15px lightgrey;
+            margin:auto;
+            display: flex;
+        }
+        #body>div:nth-child(1){
+            width:50%;
+            height:100%;
+        }
+        #body>div:nth-child(1)>img{
+            width:100%;
+            height:100%;
+        }
+        #body>div:nth-child(2){
+            width:50%;
+            height:100%;
+            padding: 20px;
+            /* border-left: 1px solid grey; */
+        }
+        #body>div:nth-child(2)>h3{
+            margin-bottom: 20px;
+            margin-top: 30px;
+        }
+        #body>div:nth-child(2)>h1{
+            margin-bottom: 20px;
+        }
+        #body>div:nth-child(2)>button{
+            margin-bottom: 20px;
+            height:40px;
+            width:50%;
+        }
+    </style>
+</head>
+<body>
+    <div id="screen">
+        <div id="body">
+            <!-- <div>
+                <img src="" alt="single-image"/>
+            </div>
+            <div>
+                <h3>Name</h3>
+                <h1><span>RS. </span> Price</h1>
+                <button>Add to Cart</button>
+                <button>Buy Now</button>
+            </div> -->
+        </div>
+    </div>
+    <script>
+        window.onload=function(){
+            let singleproduct=JSON.parse(localStorage.getItem("strawberrySingleProduct"));
+            let divToChange=document.getElementById("body");
+            let data=`  <div>
+                <img src="${singleproduct.image}" alt="single-image"/>
+            </div>
+            <div>
+                <h3>${singleproduct.name}</h3>
+                <h1><span>RS. </span> ${singleproduct.price}</h1>
+                <button onclick='cart(${JSON.stringify(singleproduct)})'>Add to Cart</button>
+                <button>Buy Now</button>
+            </div>`;
+            divToChange.innerHTML=data;
+        }
+
+        function cart(product){
+            let currentUser=JSON.parse(localStorage.getItem("strawberryLogin"));
+            let users=JSON.parse(localStorage.getItem("strawberryUsers"));
+            for(let i=0;i<users.length;i++){
+                if(users[i].email==currentUser.email){
+                    if(users[i].cartProducts==undefined){
+                        users[i].cartProducts=[product]
+                    }else{
+                        users[i].cartProducts.push(product);
+                    }
+                }
+            }
+            localStorage.setItem("strawberryUsers",JSON.stringify(users));
+            alert("Product added to the cart");
+            window.location.href='./cart.html';
+        }
+    </script>
+</body>
+</html>

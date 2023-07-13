@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: sans-serif;
+        }
+
+        #screen {
+            width: 100%;
+            /* height:100vh; */
+            /* border:1px solid red; */
+            display: flex;
+            justify-content: center;
+        }
+
+        #body {
+            margin-top: 50px;
+            width: 60%;
+            /* height:500px;     */
+            border: 1px solid lightgrey;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #body>div {
+            height: 250px;
+            width: 100%;
+            border: 1px solid rgb(239, 236, 236);
+            box-shadow: 5px 10px 15px lightgrey;
+            display: flex;
+            margin-bottom: 20px;
+        }
+
+        #body>div>div:nth-child(1) {
+            width: 50%;
+            height: 100%;
+        }
+
+        #body>div>div:nth-child(1)>img {
+            width: 100%;
+            height: 100%;
+        }
+
+        #body>div>div:nth-child(2) {
+            width: 50%;
+            height: 100%;
+            padding: 30px;
+        }
+
+        #body>div>div:nth-child(2)>h3 {
+            margin-bottom: 30px;
+        }
+
+        #body>div>div:nth-child(2)>h1 {
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="screen">
+        <div id="body">
+            <!-- <div>
+                <div>
+                    <img src="" alt="cartimage"/>
+                </div>
+                <div>
+                   <h3>NAme</h3>
+                   <h2>Price</h2>
+                </div>
+            </div> -->
+        </div>
+    </div>
+    <script>
+        window.onload = function () {
+            let currentUser = JSON.parse(localStorage.getItem("strawberryLogin"));
+            let users = JSON.parse(localStorage.getItem("strawberryUsers"));
+            let div = document.getElementById("body");
+            let products = [];
+            for (let i = 0; i < users.length; i++) {
+                if (users[i].email == currentUser.email) {
+                    products = users[i].cartProducts;
+                }
+            }
+            let cart = "";
+            for (let i = 0; i < products.length; i++) {
+                cart += `<div>
+                <div>
+                    <img src="${products[i].image}" alt="cartimage"/>
+                </div>
+                <div>
+                   <h3>${products[i].name}</h3>
+                   <h2><span><RS. /span> ${products[i].price}</h2>
+                 
+                    <button onclick='buy(${JSON.stringify(products[i])})'>Buy Now</button>
+                </div>
+            </div>`;
+            }
+            div.innerHTML = cart;
+        }
+
+        function buy(product) {
+            let productR = JSON.stringify(product);
+            // console.log(productR);
+            let users = JSON.parse(localStorage.getItem("strawberryUsers"));
+            let currentUser = JSON.parse(localStorage.getItem("strawberryLogin"));
+            let products = [];
+            for (let i = 0; i < users.length; i++) {
+                products.push(...users[i].cartProducts);
+            }
+            console.log(product.id);
+
+            for (let i = 0; i < products.length; i++) {
+                if (products[i].id == product.id) {
+                    products.splice(i, 1);
+
+
+                    for (let j=0;j<users.length;j++) {
+                        if (users[j].email == currentUser.email) {
+                            users[j].cartProducts = products.filter((p) => p.id !== product.id);
+                        }
+                    }
+                    return;
+                }
+            }
+            localStorage.setItem("strawberryUsers", JSON.stringify(users));
+        }
+
+        // function add(product){
+        //     alert("clicked add")
+        //     let productarray=json.stringify(localStorage.getItem("strawberryProducts"));
+        //     console.log(product);
+        // }
+    </script>
+</body>
+
+</html>
